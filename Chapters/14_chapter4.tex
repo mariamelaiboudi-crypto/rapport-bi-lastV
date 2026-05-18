@@ -1,0 +1,40 @@
+\chapter{Processus ETL}
+
+\section{Architecture du processus ETL}
+
+Le processus ETL (Extraction, Transformation, Chargement) est la colonne vertébrale technique de tout système de Business Intelligence. Son rôle est de garantir que les données brutes issues des systèmes sources sont nettoyées, harmonisées et structurées selon le modèle dimensionnel défini précédemment. Pour ce projet \textit{HR Analytics}, le flux de données a été conçu pour transformer un fichier plat (CSV) en un ensemble de tables prêtes pour l'analyse multidimensionnelle.
+
+L'architecture ETL adoptée se décompose en trois phases distinctes, chacune ayant des objectifs de qualité et d'intégrité rigoureux.
+
+\section{Extraction et Nettoyage des données}
+
+La phase d'extraction consiste à récupérer les données de base. Lors de cette étape, nous avons constaté que certaines variables étaient redondantes ou n'apportaient aucune valeur informative car elles présentaient une variance nulle (valeur identique pour tous les employés). 
+
+Dans un souci d'optimisation des performances et de clarté, les opérations suivantes ont été réalisées :
+\begin{itemize}
+    \item \textbf{Suppression de colonnes inutiles :} Des variables telles que \textit{EmployeeCount}, \textit{StandardHours} et \textit{Over18} ont été écartées du modèle.
+    \item \textbf{Gestion de l'intégrité :} Vérification de l'absence de doublons et de valeurs aberrantes (par exemple, des salaires négatifs ou des âges incohérents).
+\end{itemize}
+
+\section{Transformations et Logique métier}
+
+C'est lors de la phase de transformation que les données prennent leur valeur sémantique. Les traitements appliqués sont variés et essentiels pour le calcul des KPIs.
+
+\begin{figure}[h]
+\centering
+% espace réservé pour le diagramme du flux ETL
+\caption{Diagramme de flux des transformations de données}
+\end{figure}
+
+Les principales transformations effectuées incluent :
+\begin{itemize}
+    \item \textbf{Codage catégoriel :} Transformation des variables textuelles en formats exploitables par les outils de calcul. La variable \textit{Attrition} a été convertie en format binaire (Oui = 1, Non = 0) pour permettre le calcul direct du taux d'attrition moyen. De même, la variable \textit{OverTime} a été numérisée.
+    \item \textbf{Segmentation (Binning) :} Création de tranches d'âge et de tranches d'ancienneté pour faciliter les analyses de groupes (par exemple : [18-25], [26-35], etc.).
+    \item \textbf{Normalisation des labels :} Harmonisation des noms de départements et des rôles pour éviter les discordances lors des regroupements.
+\end{itemize}
+
+\section{Chargement dans le modèle décisionnel}
+
+La dernière étape consiste à charger les données transformées dans les tables respectives du schéma en étoile (\textit{Fact} et \textit{Dimensions}). Ce chargement est effectué de manière à respecter l'intégrité référentielle : les tables de dimensions sont chargées en premier pour générer les clés techniques, suivies par la table de faits. 
+
+Le résultat final est un jeu de données "propre", cohérent et optimisé, permettant une interactivité fluide lors de la phase de visualisation, avec des temps de réponse minimaux même lors de filtrages complexes.

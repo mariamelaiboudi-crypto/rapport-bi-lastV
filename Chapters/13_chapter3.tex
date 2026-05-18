@@ -1,0 +1,38 @@
+\chapter{Modélisation dimensionnelle}
+
+\section{Approche de modélisation}
+
+La modélisation dimensionnelle est une étape charnière dans la conception d'un système de Business Intelligence. Contrairement à la modélisation relationnelle classique (3NF) optimisée pour les transactions (OLTP), la modélisation dimensionnelle vise à optimiser la rapidité des requêtes et la lisibilité des données pour les outils d'analyse (OLAP). Pour ce projet, nous avons opté pour un \textbf{schéma en étoile}, structure la plus répandue et la plus efficace pour répondre aux besoins d'analyse de performance RH.
+
+Le choix du schéma en étoile se justifie par sa simplicité de navigation pour les utilisateurs finaux et sa capacité à minimiser le nombre de jointures lors de l'exécution des rapports. Au centre de ce schéma se trouve une table de faits contenant les mesures quantitatives, entourée de tables de dimensions décrivant le contexte de ces mesures.
+
+\section{Conception du schéma en étoile}
+
+L'architecture de notre entrepôt de données repose sur une table de faits centrale et plusieurs dimensions clés permettant de filtrer et de regrouper les données selon différents axes d'analyse.
+
+\begin{figure}[h]
+\centering
+% espace réservé pour le schéma conceptuel (Star Schema)
+\caption{Architecture du schéma en étoile pour le projet HR Analytics}
+\end{figure}
+
+\subsection{La table de faits : Fact\_Attrition}
+
+La table de faits, nommée \textit{Fact\_Attrition}, est le cœur de notre modèle. Chaque enregistrement représente l'état d'un employé à un instant donné. Elle contient les clés étrangères vers les dimensions ainsi que les mesures de performance :
+\begin{itemize}
+    \item \textbf{Mesures calculées :} Taux d'attrition (0 ou 1), Salaire mensuel, Augmentation salariale (%), Score de performance.
+    \item \textbf{Indicateurs temporels :} Nombre d'années dans l'entreprise, Années depuis la dernière promotion, Années sous le manager actuel.
+\end{itemize}
+
+\subsection{Les tables de dimensions}
+
+Pour offrir une vision à 360 degrés, nous avons structuré les données descriptives en plusieurs dimensions :
+
+\begin{enumerate}
+    \item \textbf{Dim\_Employee :} Contient les attributs stables des collaborateurs (Âge, Genre, État civil, Niveau d'éducation).
+    \item \textbf{Dim\_JobDetails :} Regroupe les informations liées au poste (Département, Rôle, Niveau de poste, Type de contrat).
+    \item \textbf{Dim\_Environment :} Détaille le contexte de travail (Distance domicile-travail, Voyages d'affaires, Heures supplémentaires).
+    \item \textbf{Dim\_Satisfaction :} Centralise les scores subjectifs recueillis lors des enquêtes internes (Satisfaction environnement, Satisfaction relationnelle, Implication au travail, Équilibre vie-travail).
+\end{enumerate}
+
+Cette séparation permet une grande flexibilité : un analyste peut, par exemple, croiser la dimension \textit{Satisfaction} avec la dimension \textit{JobDetails} pour identifier si un département spécifique souffre d'un manque d'implication, indépendamment des niveaux de salaire.

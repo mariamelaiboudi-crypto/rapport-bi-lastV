@@ -1,0 +1,45 @@
+\documentclass{rapportENIAD}
+
+% Configuration and Packages
+\input{preamble}
+
+% Document Metadata
+\input{metadata}
+
+\begin{document}
+
+%----------- Initialisation -------------------
+\fairemarges % Afficher les marges
+\fairepagedegarde % Créer la page de garde
+
+%-------------- Front Matter --------------
+\pagenumbering{roman} % Page numbering in Roman numerals for front matter
+
+\include{Chapters/00_remerciements}
+\include{Chapters/01_resume}
+\include{Chapters/02_abstract}
+\include{Chapters/03_abbreviations}
+\include{Chapters/04_list_figures}
+
+% Table of Contents
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Table des matières}
+\tableofcontents
+\newpage
+
+%-------------- Main Matter --------------
+\pagenumbering{arabic} % Page numbering in Arabic numerals for main content
+
+\include{Chapters/05_introduction}
+\include{Chapters/11_chapter1}
+\include{Chapters/12_chapter2}
+\include{Chapters/13_chapter3}
+\include{Chapters/14_chapter4}
+\include{Chapters/15_chapter5}
+\include{Chapters/16_chapter6}
+
+%-------------- Back Matter --------------
+\include{Chapters/90_bibliographie}
+\include{Chapters/91_annexes}
+
+\end{document}

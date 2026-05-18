@@ -1,0 +1,45 @@
+\chapter{Analyse et Visualisation}
+
+\section{Conception des Tableaux de bord}
+
+La visualisation des données est l'aboutissement du projet de Business Intelligence. Son but est de traduire des données complexes en informations visuelles intuitives pour soutenir la prise de décision. Pour l'analyse de l'attrition et de la performance, nous avons conçu un tableau de bord interactif structuré en plusieurs pages thématiques, permettant aux gestionnaires d'explorer les données à différents niveaux de granularité.
+
+\begin{figure}[h]
+\centering
+% espace réservé pour la vue d'ensemble du dashboard (Page 1)
+\caption{Vue d'ensemble du tableau de bord RH - Analyse de l'attrition}
+\end{figure}
+
+Le design a été guidé par les principes de la "Data Visualization" : utilisation de codes couleurs cohérents (rouge pour l'attrition positive, vert pour la stabilité), mise en avant des KPIs critiques en haut de page, et intégration de filtres dynamiques par département, genre et rôle professionnel.
+
+\section{Analyse multidimensionnelle et Insights}
+
+L'exploitation des tableaux de bord a permis de mettre en évidence plusieurs phénomènes structurants au sein de l'organisation. L'analyse ne se limite pas au constat du taux de départ, mais cherche à en comprendre les racines profondes.
+
+\subsection{Analyse par Profil et Département}
+
+L'un des premiers constats concerne la disparité entre les départements. Le département des \textit{Ventes} présente un taux d'attrition significativement plus élevé que celui de la \textit{Recherche et Développement}. Cela suggère des conditions de stress ou de pression sur les objectifs plus marquées dans ces fonctions.
+
+\begin{figure}[h]
+\centering
+% espace réservé pour le graphique de l'attrition par département
+\caption{Répartition du taux d'attrition selon les départements et les rôles}
+\end{figure}
+
+\subsection{L'impact des facteurs de travail}
+
+L'analyse croisée des heures supplémentaires et de la satisfaction révèle un insight majeur : les employés effectuant des heures supplémentaires régulières ont un taux d'attrition deux fois supérieur à la moyenne. Ce facteur semble primer sur le niveau de rémunération pour une part importante des départs volontaires.
+
+De plus, la distance domicile-travail apparaît comme un facteur d'érosion silencieux. Au-delà d'un certain seuil kilométrique, la probabilité de départ augmente de manière exponentielle, soulignant l'importance des politiques de télétravail ou de flexibilité géographique.
+
+\section{Interprétation de la performance}
+
+En parallèle de l'attrition, le tableau de bord permet d'évaluer la performance. Nous observons une corrélation positive entre le niveau d'implication (\textit{Job Involvement}) et la note de performance. Cependant, il est intéressant de noter que certains des employés les plus performants se situent également dans les segments à risque d'attrition, souvent par manque de perspectives de promotion ou d'équilibre vie-travail.
+
+\begin{figure}[h]
+\centering
+% espace réservé pour le graphique corrélation performance vs attrition
+\caption{Analyse de la relation entre performance et risque de départ}
+\end{figure}
+
+Ces résultats fournissent une base factuelle pour la direction des ressources humaines, leur permettant de cibler leurs actions de rétention non pas de manière uniforme, mais en fonction des facteurs de risque identifiés par le système BI.

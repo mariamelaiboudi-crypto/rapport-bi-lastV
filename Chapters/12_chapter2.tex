@@ -1,0 +1,49 @@
+\chapter{Analyse des besoins et Exploration des données}
+
+\section{Analyse des besoins et KPIs}
+
+La réussite d'un projet de Business Intelligence repose sur une définition précise des besoins des utilisateurs finaux. Dans le cadre de la gestion des ressources humaines, les principaux demandeurs sont les directeurs des ressources humaines (DRH) et les chefs de département. Leurs besoins s'articulent autour de la surveillance en temps réel des mouvements de personnel et de la compréhension des facteurs de risque.
+
+Pour répondre à ces attentes, nous avons identifié plusieurs indicateurs de performance clés (KPIs) essentiels :
+\begin{itemize}
+    \item \textbf{Taux d'attrition global :} Proportion d'employés ayant quitté l'entreprise sur une période donnée par rapport à l'effectif total.
+    \item \textbf{Ancienneté moyenne :} Durée moyenne passée par les employés au sein de l'organisation, segmentée par département.
+    \item \textbf{Score de satisfaction moyen :} Moyenne agrégée des scores de satisfaction au travail et d'équilibre vie-travail.
+    \item \textbf{Rémunération moyenne par rôle :} Comparaison des salaires mensuels pour identifier d'éventuels écarts impactant la rétention.
+\end{itemize}
+
+L'objectif est de permettre une exploration multidimensionnelle de ces indicateurs, par exemple en analysant le taux d'attrition selon le niveau d'études ou le département, afin de déceler des poches de turnover spécifiques.
+
+\section{Source et description du jeu de données}
+
+Le support de cette analyse est un jeu de données complet relatif aux ressources humaines, simulant les données réelles d'une entreprise multinationale. Ce dataset comprend 1470 observations, chaque ligne représentant un employé unique, et 35 variables décrivant divers aspects de son profil sociodémographique, professionnel et psychologique.
+
+Les variables peuvent être classées en quatre catégories principales :
+\begin{enumerate}
+    \item \textbf{Données personnelles :} Âge, sexe, état civil, niveau d'études.
+    \item \textbf{Profil professionnel :} Département, rôle, niveau de poste, nombre d'années d'expérience, nombre d'entreprises fréquentées.
+    \item \textbf{Conditions de travail :} Distance domicile-travail, fréquence des voyages d'affaires, heures supplémentaires, environnement de travail.
+    \item \textbf{Facteurs psychologiques et financiers :} Satisfaction au travail, relation avec le manager, équilibre vie professionnelle-vie privée, salaire mensuel, augmentation salariale.
+\end{enumerate}
+
+La variable cible, nommée \textit{Attrition}, est une variable catégorielle binaire indiquant si l'employé est toujours en poste ou s'il a quitté l'organisation.
+
+\section{Exploration des données (EDA)}
+
+L'analyse exploratoire des données constitue une étape préliminaire indispensable pour valider la qualité des informations et identifier les tendances majeures. Une première inspection révèle que le jeu de données est de haute qualité, sans valeurs manquantes critiques, ce qui facilite les traitements ultérieurs.
+
+\begin{figure}[h]
+\centering
+% espace réservé pour la figure montrant la distribution de l'âge et de l'attrition
+\caption{Distribution de l'âge des employés en fonction de l'attrition}
+\end{figure}
+
+L'analyse de la distribution de l'âge montre que l'attrition est plus fréquente chez les jeunes collaborateurs (entre 25 et 35 ans), ce qui peut s'expliquer par une plus grande mobilité professionnelle en début de carrière. Par ailleurs, une étude de la corrélation entre les heures supplémentaires et le départ des employés indique une tendance marquée : les employés effectuant régulièrement des heures supplémentaires présentent un risque d'attrition nettement plus élevé.
+
+\begin{figure}[h]
+\centering
+% espace réservé pour la figure montrant la corrélation entre salaire et attrition
+\caption{Impact du salaire mensuel sur la décision de départ}
+\end{figure}
+
+Enfin, l'examen de la rémunération confirme que les bas salaires sont fortement corrélés à un taux de rotation élevé. Cependant, cette tendance est nuancée par le rôle occupé ; certains postes à haute responsabilité présentent des taux de satisfaction élevés malgré un stress important, soulignant l'aspect multifactoriel du phénomène d'attrition.

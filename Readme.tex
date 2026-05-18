@@ -1,0 +1,133 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{fontawesome5}
+
+\geometry{margin=2.5cm}
+
+% Couleurs personnalisées
+\definecolor{primary}{RGB}{41, 128, 185}
+\definecolor{secondary}{RGB}{44, 62, 80}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primary,
+    urlcolor=primary,
+    pdftitle={README - HR Analytics}
+}
+
+\begin{document}
+
+\begin{center}
+    {\Huge \textbf{\color{primary} \faChartBar \ Projet Business Intelligence (BI)}} \\
+    \vspace{0.3cm}
+    {\LARGE \textbf{HR Analytics - Employee Attrition \& Performance}}
+\end{center}
+
+\vspace{0.8cm}
+
+\section*{\faBullseye \ Présentation du Projet}
+Ce dépôt contient une solution BI complète pour l'analyse des ressources humaines (RH). L'objectif est d'analyser l'attrition des employés, leurs performances et la structure salariale afin de fournir des informations exploitables pour la gestion des RH.
+
+\vspace{0.5cm}
+
+\section*{\faUsers \ Équipe de Projet}
+\begin{itemize}
+    \item \textbf{ZAKARIAE EL HADDOUCHI} -- \textit{Développement ETL \& Modélisation}
+    \item \textbf{OUSSAMA Lebyed} -- \textit{Analyse de Données \& KPIs}
+    \item \textbf{Oualid Boutayeb} -- \textit{Visualisation \& Dashboard}
+    \item \textbf{Meryam El Aiboudi} -- \textit{Analyse \& Documentation BI}
+\end{itemize}
+
+\vspace{0.5cm}
+
+\section*{\faTools \ Stack Technique}
+\begin{itemize}
+    \item \textbf{Extraction \& Transformation (ETL) :} Python (Pandas)
+    \item \textbf{Stockage/Modélisation :} SQL (Star Schema)
+    \item \textbf{Visualisation :} Power BI
+    \item \textbf{Gestion de version :} Git \& GitHub
+\end{itemize}
+
+\vspace{0.5cm}
+
+\section*{\faRocket \ Méthodologie (Cycle de vie BI)}
+
+\subsection*{1. Analyse des Besoins \& KPIs}
+Nous avons défini les indicateurs clés de performance (KPIs) suivants :
+\begin{itemize}
+    \item \textbf{Taux d'Attrition} : Pourcentage d'employés ayant quitté l'entreprise.
+    \item \textbf{Salaire Moyen par Département} : Analyse de la répartition des coûts salariaux.
+    \item \textbf{Performance vs Ancienneté} : Corrélation entre la note de performance et le temps passé dans l'entreprise.
+\end{itemize}
+
+\subsection*{2. Collecte et Préparation des Données}
+\begin{itemize}
+    \item \textbf{Source :} Données synthétiques générées via \texttt{Scripts/Python/data\_generator.py}.
+    \item \textbf{Nettoyage :} Traitement via Python (Gestion des dates, calcul de l'ancienneté, création des tables de dimension).
+\end{itemize}
+
+\subsection*{3. Modélisation (Schéma Décisionnel)}
+Conception d'un \textbf{Schéma en Étoile (Star Schema)} comprenant :
+\begin{itemize}
+    \item \textbf{Table de Fait :} \texttt{Fact\_EmployeeRecords}
+    \item \textbf{Tables de Dimensions :} \texttt{Dim\_Employee}, \texttt{Dim\_Department}, \texttt{Dim\_Date}.
+\end{itemize}
+
+\vspace{0.5cm}
+
+\section*{\faFolderOpen \ Structure du Repository}
+\begin{lstlisting}[basicstyle=\ttfamily\small, frame=single]
+├── Data/                
+│   ├── Raw/             # hr_data_raw.csv
+│   └── Processed/       # Tables du Schema en Etoile
+├── SQL/                 
+│   └── Scripts/         # schema_setup.sql
+├── Models/              
+│   └── PowerBI/         # Fichiers .pbix
+├── Scripts/             
+│   └── Python/          
+│       ├── data_generator.py
+│       └── etl_process.py
+└── README.md            
+\end{lstlisting}
+
+\section*{\faPlayCircle \ Comment exécuter le projet}
+\begin{enumerate}
+    \item Générer les données : \texttt{python Scripts/Python/data\_generator.py}
+    \item Lancer l'ETL : \texttt{python Scripts/Python/etl\_process.py}
+\end{enumerate}
+
+\section*{\faTable \ Dictionnaire des Mesures DAX}
+
+\subsubsection*{Performance \& Masse Salariale}
+\begin{tabular}{lp{7cm}l}
+\toprule
+\textbf{Mesure} & \textbf{Description} & \textbf{Format} \\
+\midrule
+Moyenne Performance & Note moyenne des évaluations. & Décimal \\
+Salaire Moyen & Rémunération moyenne. & Devise \\
+Masse Salariale & Somme totale des salaires. & Devise \\
+\bottomrule
+\end{tabular}
+
+\subsubsection*{Effectifs \& Rétention}
+\begin{tabular}{lp{7cm}l}
+\toprule
+\textbf{Mesure} & \textbf{Description} & \textbf{Format} \\
+\midrule
+Total Employees & Nombre total d'employés. & Entier \\
+Nombre Depart & Nombre cumulé de départs. & Entier \\
+Taux de Attrition & Ratio de départ (Turnover). & Pourcentage \\
+\bottomrule
+\end{tabular}
+
+\end{document}
