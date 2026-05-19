@@ -1,4 +1,51 @@
 \chapter*{Annexes}
 \addcontentsline{toc}{chapter}{Annexes}
 
-Ajoutez vos documents annexes ici...
+\section*{Annexe A : Description du Dataset}
+Le dataset utilisé dans ce projet est le jeu de données IBM HR Analytics Employee Attrition \& Performance disponible sur Kaggle.  
+Il contient des informations sur les employés telles que :
+\begin{itemize}
+    \item Âge
+    \item Département
+    \item Salaire mensuel
+    \item Niveau d’éducation
+    \item Satisfaction au travail
+    \item Nombre d’années d’expérience
+    \item Taux d’attrition
+\end{itemize}
+
+\section*{Annexe B : Technologies Utilisées}
+Les principales technologies utilisées dans ce projet sont :
+\begin{itemize}
+    \item Python
+    \item Pandas
+    \item NumPy
+    \item SQL Server
+    \item Power BI
+    \item Jupyter Notebook
+\end{itemize}
+
+\section*{Annexe C : Exemple de Requête SQL}
+\begin{verbatim}
+SELECT Department,
+       AVG(MonthlyIncome) AS AverageSalary
+FROM Employees
+GROUP BY Department;
+\end{verbatim}
+
+\section*{Annexe D : Captures d’Écran}
+Cette section contient :
+\begin{itemize}
+    \item Les tableaux de bord Power BI
+    \item Les visualisations analytiques
+    \item Les résultats des analyses RH
+\end{itemize}
+
+\section*{Annexe E : Objectifs du Projet}
+Les principaux objectifs du projet sont :
+\begin{itemize}
+    \item Construire un Data Warehouse RH
+    \item Analyser les performances des employés
+    \item Étudier les facteurs d’attrition
+    \item Faciliter la prise de décision grâce à la Business Intelligence
+\end{itemize}
