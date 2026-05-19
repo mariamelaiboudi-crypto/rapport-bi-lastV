@@ -1,19 +1,61 @@
-\chapter{Introduction et Contexte}
+\chapter{Cadre du Projet, Gouvernance et Analyse du Besoin}
 
-\section{Contexte du projet}
+\section{Présentation de l'Organisme d'Accueil}
+Le présent projet s'inscrit dans le cadre d'une étude analytique au sein de l'École Nationale de l'Intelligence Artificielle et du Digital (ENIAD). L'objectif est de simuler une intervention de conseil en Business Intelligence pour une entreprise de services moderne faisant face à des défis de gestion de son capital humain. L'organisation cible, bien que fictive pour les besoins de l'exercice, reflète les enjeux réels des départements RH actuels : besoin de réactivité, optimisation de la rétention et pilotage par la performance.
 
-L'attrition des employés, définie comme le départ volontaire ou involontaire des membres du personnel, représente l'un des défis les plus complexes pour les départements des ressources humaines contemporains. Au-delà de la simple perte de main-d'œuvre, ce phénomène engendre des coûts financiers considérables liés au recrutement, à la formation des nouveaux arrivants et à la perte de productivité pendant la phase de transition. De plus, un taux de rotation élevé peut altérer le moral des équipes restantes et fragiliser la culture d'entreprise.
+\section{Étude de l'Existant et Critique}
+Actuellement, l'entreprise gère ses données RH de manière fragmentée. Les informations sont extraites de divers systèmes (ERP, fichiers de pointage) et consolidées manuellement sous forme de classeurs Excel isolés.
 
-Dans ce contexte, l'utilisation de la Business Intelligence (BI) devient indispensable. Elle permet de passer d'une gestion réactive, où l'on constate les départs a posteriori, à une gestion proactive basée sur l'analyse de données. Le projet \textit{HR Analytics} se propose donc de construire une architecture décisionnelle capable de centraliser les données relatives au parcours des employés, à leur environnement de travail et à leurs performances pour en extraire une connaissance à haute valeur ajoutée.
+\subsection{Limites identifiées}
+\begin{itemize}
+    \item \textbf{Processus chronophages :} La collecte et le nettoyage manuel des données occupent plus de 60\% du temps des analystes RH.
+    \item \textbf{Risques d'erreurs :} Les manipulations manuelles (copier-coller, formules Excel complexes) entraînent des incohérences dans les rapports finaux.
+    \item \textbf{Manque de flexibilité :} Les rapports sont statiques. Toute nouvelle demande d'analyse nécessite une refonte complète du fichier.
+    \item \textbf{Absence de source unique :} Il n'existe pas de référentiel centralisé, ce qui conduit à des chiffres divergents entre les départements.
+\end{itemize}
 
-\section{Problématique}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig1_1_existant.png}
+    \caption{Schéma de la circulation de l'information existante}
+    \label{fig:existant}
+\end{figure}
 
-La problématique centrale de cette étude réside dans la compréhension des variables endogènes et exogènes qui influencent la décision d'un employé de quitter l'organisation. Plusieurs questions fondamentales guident notre analyse : quels sont les profils les plus susceptibles de démissionner ? Existe-t-il une corrélation significative entre le niveau de rémunération, l'équilibre entre vie professionnelle et vie privée, et le taux d'attrition ? Comment la distance domicile-travail ou la fréquence des voyages d'affaires impactent-elles la stabilité des effectifs ?
+\section{Spécification des Besoins}
 
-L'enjeu est de transformer ces interrogations en indicateurs mesurables. L'absence d'un système centralisé et automatisé de suivi des RH rend souvent difficile l'identification des signaux faibles précurseurs d'un départ. Ce projet vise donc à combler cette lacune en fournissant un outil d'aide à la décision robuste, permettant d'identifier les segments de la population salariée les plus à risque et d'orienter les politiques de rétention vers les leviers les plus efficaces.
+\subsection{Besoins fonctionnels}
+\begin{itemize}
+    \item \textbf{Calcul automatisé du Headcount :} Suivi en temps réel de l'effectif total et actif.
+    \item \textbf{Analyse de l'Attrition :} Calcul dynamique du taux de départ et identification des segments à risque.
+    \item \textbf{Suivi de la Satisfaction :} Corrélation entre le climat social et la rétention.
+    \item \textbf{Pilotage de la Masse Salariale :} Vision globale des rémunérations par département et job role.
+    \item \textbf{Filtrage dynamique :} Capacité de segmenter tous les indicateurs par période, département et genre.
+\end{itemize}
 
-\section{Objectifs du projet}
+\subsection{Besoins non-fonctionnels}
+\begin{itemize}
+    \item \textbf{Performance :} Temps de réponse des visuels inférieur à 2 secondes malgré le volume de données.
+    \item \textbf{Ergonomie :} Interface intuitive respectant les codes du Data Storytelling (Thème Executive 3D).
+    \item \textbf{Maintenabilité :} Architecture modulaire permettant d'ajouter de nouvelles sources facilement.
+\end{itemize}
 
-Le déploiement de cette solution décisionnelle poursuit plusieurs objectifs spécifiques et interconnectés. En premier lieu, il s'agit de mettre en place un processus d'intégration de données cohérent pour unifier les sources d'informations RH. Ensuite, la conception d'un modèle dimensionnel optimisé doit permettre des analyses multidimensionnelles fluides. 
+\section{Organisation de l'Équipe et Méthodologie}
 
-Sur le plan analytique, l'objectif est de produire des visualisations claires et parlantes mettant en évidence les tendances d'attrition par département, par rôle et par niveau d'ancienneté. Enfin, le projet vise à fournir aux gestionnaires des ressources humaines des recommandations basées sur les faits pour optimiser la performance globale et améliorer le bien-être des collaborateurs au sein de l'entreprise.
+Pour garantir le succès du projet, nous avons adopté une organisation par rôles spécialisés, s'appuyant sur un workflow Git rigoureux :
+
+\begin{itemize}
+    \item \textbf{Zakariae EL HADDOUCHI (Data Engineer) :} Responsable du pipeline ETL (\textit{branch: feature/etl-pipeline}). En charge de la connexion, du nettoyage et de la structuration des flux bruts.
+    \item \textbf{Oussama LEBYED (Data Architect) :} Responsable de la modélisation dimensionnelle (\textit{branch: feature/data-modeling}). En charge du Schéma en Étoile et de l'intégrité des relations.
+    \item \textbf{Meryame EL AIBOUDI (Business Analyst) :} Responsable de la logique analytique et documentation (\textit{branch: feature/kpi-logic}). En charge des mesures DAX et du dictionnaire de données.
+    \item \textbf{Oualid BOUTAYEB (Data Visualizer) :} Responsable du design et du storytelling (\textit{branch: feature/dashboard-design}). En charge de l'UI/UX et de la restitution graphique.
+\end{itemize}
+
+\section{Planification et Suivi}
+Le projet a été découpé en lots de travail suivant une approche agile. Le suivi a été assuré par un diagramme de Gantt permettant de visualiser les dépendances entre les phases ETL, Modélisation et Visualisation.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig1_2_gantt.png}
+    \caption{Diagramme de Gantt du projet}
+    \label{fig:gantt}
+\end{figure}

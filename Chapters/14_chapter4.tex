@@ -1,40 +1,62 @@
-\chapter{Processus ETL}
+\chapter{Déploiement, Restitution Visuelle et Discussion}
 
-\section{Architecture du processus ETL}
-
-Le processus ETL (Extraction, Transformation, Chargement) est la colonne vertébrale technique de tout système de Business Intelligence. Son rôle est de garantir que les données brutes issues des systèmes sources sont nettoyées, harmonisées et structurées selon le modèle dimensionnel défini précédemment. Pour ce projet \textit{HR Analytics}, le flux de données a été conçu pour transformer un fichier plat (CSV) en un ensemble de tables prêtes pour l'analyse multidimensionnelle.
-
-L'architecture ETL adoptée se décompose en trois phases distinctes, chacune ayant des objectifs de qualité et d'intégrité rigoureux.
-
-\section{Extraction et Nettoyage des données}
-
-La phase d'extraction consiste à récupérer les données de base. Lors de cette étape, nous avons constaté que certaines variables étaient redondantes ou n'apportaient aucune valeur informative car elles présentaient une variance nulle (valeur identique pour tous les employés). 
-
-Dans un souci d'optimisation des performances et de clarté, les opérations suivantes ont été réalisées :
+\section{Phase de Recette Globale et Validation de la Cohérence Métier}
+Avant la mise en production des tableaux de bord, une phase de recette rigoureuse a été menée. Cette étape a permis de comparer les résultats agrégés par Power BI avec les sources Excel brutes.
 \begin{itemize}
-    \item \textbf{Suppression de colonnes inutiles :} Des variables telles que \textit{EmployeeCount}, \textit{StandardHours} et \textit{Over18} ont été écartées du modèle.
-    \item \textbf{Gestion de l'intégrité :} Vérification de l'absence de doublons et de valeurs aberrantes (par exemple, des salaires négatifs ou des âges incohérents).
+    \item \textbf{Validation du Headcount :} Vérification que le nombre total d'employés (300) correspond au référentiel.
+    \item \textbf{Test des filtres :} Validation que le changement de département ou d'année recalcule correctement toutes les mesures (Cross-filtering).
+    \item \textbf{Cohérence du Turnover :} Validation manuelle du taux de 23\% sur un échantillon de départements.
 \end{itemize}
 
-\section{Transformations et Logique métier}
+\section{Présentation des Livrables Graphiques (Dashboard)}
+La restitution a été structurée en trois axes décisionnels majeurs, offrant une vision à la fois macroscopique et granulaire du capital humain.
 
-C'est lors de la phase de transformation que les données prennent leur valeur sémantique. Les traitements appliqués sont variés et essentiels pour le calcul des KPIs.
+\subsection{Axe 1 : Suivi des Effectifs et Démographie}
+Cette première page se concentre sur la structure de la force de travail.
+\begin{itemize}
+    \item \textbf{KPIs Clés :} Effectif total, \% de Femmes, Âge moyen.
+    \item \textbf{Analyses :} Répartition par département et pyramide des âges interactive.
+\end{itemize}
 
 \begin{figure}[h]
-\centering
-% espace réservé pour le diagramme du flux ETL
-\caption{Diagramme de flux des transformations de données}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig4_1_dashboard_p1.png}
+    \caption{Interface de suivi démographique}
+    \label{fig:page1}
 \end{figure}
 
-Les principales transformations effectuées incluent :
+\subsection{Axe 2 : Analyse des Mouvements et Climat Social}
+C'est le cœur analytique du projet, visant à comprendre pourquoi les employés partent.
 \begin{itemize}
-    \item \textbf{Codage catégoriel :} Transformation des variables textuelles en formats exploitables par les outils de calcul. La variable \textit{Attrition} a été convertie en format binaire (Oui = 1, Non = 0) pour permettre le calcul direct du taux d'attrition moyen. De même, la variable \textit{OverTime} a été numérisée.
-    \item \textbf{Segmentation (Binning) :} Création de tranches d'âge et de tranches d'ancienneté pour faciliter les analyses de groupes (par exemple : [18-25], [26-35], etc.).
-    \item \textbf{Normalisation des labels :} Harmonisation des noms de départements et des rôles pour éviter les discordances lors des regroupements.
+    \item \textbf{KPIs Clés :} Taux d'attrition global (23\%), Score de satisfaction moyen (0.61).
+    \item \textbf{Insights :} Identification du département \textit{Sales} comme zone critique (31\% d'attrition) et corrélation entre surcharge horaire (>220h) et intention de départ.
 \end{itemize}
 
-\section{Chargement dans le modèle décisionnel}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig4_2_dashboard_p2.png}
+    \caption{Interface d'analyse de l'attrition et de la satisfaction}
+    \label{fig:page2}
+\end{figure}
 
-La dernière étape consiste à charger les données transformées dans les tables respectives du schéma en étoile (\textit{Fact} et \textit{Dimensions}). Ce chargement est effectué de manière à respecter l'intégrité référentielle : les tables de dimensions sont chargées en premier pour générer les clés techniques, suivies par la table de faits. 
+\subsection{Axe 3 : Pilotage de la Masse Salariale et Rémunérations}
+Cet axe permet d'aligner la stratégie RH avec les contraintes budgétaires.
+\begin{itemize}
+    \item \textbf{KPIs Clés :} Masse salariale totale, Salaire moyen par Job Role.
+    \item \textbf{Analyses :} Comparaison des performances individuelles par rapport aux tranches de salaire pour détecter les iniquités potentielles.
+\end{itemize}
 
-Le résultat final est un jeu de données "propre", cohérent et optimisé, permettant une interactivité fluide lors de la phase de visualisation, avec des temps de réponse minimaux même lors de filtrages complexes.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig4_3_dashboard_p3.png}
+    \caption{Interface de pilotage financier des RH}
+    \label{fig:page3}
+\end{figure}
+
+\section{Évaluation de la Valeur Ajoutée et ROI}
+La mise en œuvre de cette solution apporte un Retour sur Investissement (ROI) immédiat pour l'organisation :
+\begin{itemize}
+    \item \textbf{Gain de temps :} Automatisation totale des rapports, libérant 4 jours/mois pour l'équipe RH.
+    \item \textbf{Fiabilité :} Suppression des erreurs de saisie manuelle grâce au pipeline ETL.
+    \item \textbf{Agilité :} Capacité à détecter un pic de départs en temps réel et à intervenir avant que la situation ne devienne critique.
+\end{itemize}

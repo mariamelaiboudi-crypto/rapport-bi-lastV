@@ -1,38 +1,71 @@
-\chapter{Modélisation dimensionnelle}
+\chapter{Conception Fine et Réalisation Technique}
 
-\section{Approche de modélisation}
+\section{Pipeline ETL et Préparation des Données (etl\_HR.pbix)}
+La phase ETL a été conçue pour transformer des données RH brutes et hétérogènes en un ensemble cohérent et prêt pour l'analyse.
 
-La modélisation dimensionnelle est une étape charnière dans la conception d'un système de Business Intelligence. Contrairement à la modélisation relationnelle classique (3NF) optimisée pour les transactions (OLTP), la modélisation dimensionnelle vise à optimiser la rapidité des requêtes et la lisibilité des données pour les outils d'analyse (OLAP). Pour ce projet, nous avons opté pour un \textbf{schéma en étoile}, structure la plus répandue et la plus efficace pour répondre aux besoins d'analyse de performance RH.
-
-Le choix du schéma en étoile se justifie par sa simplicité de navigation pour les utilisateurs finaux et sa capacité à minimiser le nombre de jointures lors de l'exécution des rapports. Au centre de ce schéma se trouve une table de faits contenant les mesures quantitatives, entourée de tables de dimensions décrivant le contexte de ces mesures.
-
-\section{Conception du schéma en étoile}
-
-L'architecture de notre entrepôt de données repose sur une table de faits centrale et plusieurs dimensions clés permettant de filtrer et de regrouper les données selon différents axes d'analyse.
-
-\begin{figure}[h]
-\centering
-% espace réservé pour le schéma conceptuel (Star Schema)
-\caption{Architecture du schéma en étoile pour le projet HR Analytics}
-\end{figure}
-
-\subsection{La table de faits : Fact\_Attrition}
-
-La table de faits, nommée \textit{Fact\_Attrition}, est le cœur de notre modèle. Chaque enregistrement représente l'état d'un employé à un instant donné. Elle contient les clés étrangères vers les dimensions ainsi que les mesures de performance :
+\subsection{Transformations appliquées sous Power Query}
+Les principales étapes de transformation incluent :
 \begin{itemize}
-    \item \textbf{Mesures calculées :} Taux d'attrition (0 ou 1), Salaire mensuel, Augmentation salariale (%), Score de performance.
-    \item \textbf{Indicateurs temporels :} Nombre d'années dans l'entreprise, Années depuis la dernière promotion, Années sous le manager actuel.
+    \item \textbf{Typage et Nettoyage :} Conversion des colonnes de salaire en entier et normalisation des noms de départements.
+    \item \textbf{Gestion des valeurs nulles :} Pour les employés actifs, la date de sortie (\textit{ExitDate}) a été gérée dynamiquement pour permettre le calcul de l'ancienneté.
+    \item \textbf{Segmentation (SalaryBand) :} Création d'une colonne conditionnelle classant les employés par tranches de salaire (Entry, Mid, Senior, Executive).
+    \item \textbf{Ancienneté (Tenure\_Years) :} Calcul de la durée de présence en années à partir de la date d'embauche et de la date de sortie (ou aujourd'hui).
 \end{itemize}
 
-\subsection{Les tables de dimensions}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig3_1_powerquery.png}
+    \caption{Aperçu du pipeline de transformation Power Query}
+    \label{fig:etl}
+\end{figure}
 
-Pour offrir une vision à 360 degrés, nous avons structuré les données descriptives en plusieurs dimensions :
+\section{Modélisation Conceptuelle et Schéma en Étoile (dim\_HR.pbix)}
+L'architecture du modèle repose sur un \textbf{Schéma en Étoile}, garantissant des performances optimales et une clarté analytique.
 
-\begin{enumerate}
-    \item \textbf{Dim\_Employee :} Contient les attributs stables des collaborateurs (Âge, Genre, État civil, Niveau d'éducation).
-    \item \textbf{Dim\_JobDetails :} Regroupe les informations liées au poste (Département, Rôle, Niveau de poste, Type de contrat).
-    \item \textbf{Dim\_Environment :} Détaille le contexte de travail (Distance domicile-travail, Voyages d'affaires, Heures supplémentaires).
-    \item \textbf{Dim\_Satisfaction :} Centralise les scores subjectifs recueillis lors des enquêtes internes (Satisfaction environnement, Satisfaction relationnelle, Implication au travail, Équilibre vie-travail).
-\end{enumerate}
+\subsection{Structure du modèle}
+\begin{itemize}
+    \item \textbf{FactHR (Table de faits) :} Centralise les mesures (Salaire, satisfaction, évaluation) et les clés étrangères vers les dimensions.
+    \item \textbf{DimEmployee (Dimension) :} Attributs granulaires des collaborateurs (Âge, Genre, Rôle).
+    \item \textbf{DimDepartment (Dimension) :} Nomenclature des pôles d'activité.
+    \item \textbf{DimDate (Dimension) :} Calendrier dynamique pour les analyses temporelles.
+\end{itemize}
 
-Cette séparation permet une grande flexibilité : un analyste peut, par exemple, croiser la dimension \textit{Satisfaction} avec la dimension \textit{JobDetails} pour identifier si un département spécifique souffre d'un manque d'implication, indépendamment des niveaux de salaire.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/modele_etoile.png}
+    \caption{Architecture du Schéma en Étoile finalisé}
+    \label{fig:star_schema}
+\end{figure}
+
+\section{Développement des Métriques et Logique Analytique (dax\_HR.pbix)}
+Le moteur DAX a été utilisé pour traduire les besoins métiers en indicateurs de performance (KPIs) dynamiques.
+
+\subsection{Exemples de mesures DAX clés}
+Nous avons implémenté des mesures avancées pour isoler les risques d'attrition :
+
+\begin{itemize}
+    \item \textbf{Attrition Rate :}
+    \begin{lstlisting}[language=SQL]
+Attrition Rate = 
+DIVIDE(
+    CALCULATE(DISTINCTCOUNT(FactHR[EmployeeID]), FactHR[left] = 1),
+    [Total Employees], 0
+)
+    \end{lstlisting}
+    
+    \item \textbf{Overtime Risk Score :} Identifie les employés dépassant 220 heures mensuelles.
+    \begin{lstlisting}[language=SQL]
+Overtime Risk Score = 
+CALCULATE(
+    DISTINCTCOUNT(FactHR[EmployeeID]),
+    FILTER(FactHR, FactHR[average_monthly_hours] > 220)
+)
+    \end{lstlisting}
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig3_3_dax.png}
+    \caption{Visualisation d'une mesure complexe dans Power BI Desktop}
+    \label{fig:dax}
+\end{figure}

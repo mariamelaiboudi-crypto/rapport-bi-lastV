@@ -1,0 +1,53 @@
+\chapter{Analyse et Storytelling Data}
+
+\section{Introduction au Storytelling Data}
+
+La donnée brute n'est que du bruit ; l'insight est le signal. Ce chapitre expose la "narration" de nos données, transformant les chiffres en une histoire cohérente sur la vie sociale de l'entreprise.
+
+\section{Le Grand Constat : Pourquoi 23\% d'Attrition ?}
+
+Notre analyse globale montre que l'attrition n'est pas distribuée de manière aléatoire. Elle suit des patterns précis liés à la charge de travail et à la reconnaissance.
+
+\subsection{L'Effet "Burnout" : La Loi des 220 Heures}
+L'un des insights les plus marquants de notre étude concerne la charge horaire mensuelle.
+\begin{itemize}
+    \item \textbf{Observation :} Les employés travaillant en moyenne \textbf{201 heures} par mois sont stables.
+    \item \textbf{Alerte :} Dès que la moyenne dépasse \textbf{220 heures}, le risque de départ est multiplié par \textbf{2,3}.
+    \item \textbf{Impact :} Près de 45\% des départs récents concernent des collaborateurs ayant subi une surcharge chronique sur les 6 derniers mois.
+\end{itemize}
+
+\subsection{Le Paradoxe de l'Ancienneté}
+Contrairement à l'idée que les "nouveaux" partent plus vite, nos données montrent un pic critique entre \textbf{2 et 3 ans d'ancienneté}.
+\begin{itemize}
+    \item \textbf{Hypothèse :} Cette période correspond à la fin de la phase d'apprentissage et au besoin de nouveaux défis.
+    \item \textbf{Action :} C'est le moment idéal pour proposer une mobilité interne ou une formation certifiante.
+\end{itemize}
+
+\section{Performance vs Rétention : Le Danger des Top Performers}
+
+Nous avons croisé les notes de performance (\textit{PerformanceRating}) avec l'attrition. Les résultats sont contre-intuitifs.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Note Performance} & \textbf{Taux d'Attrition} & \textbf{Analyse} \\ \hline
+1 - Faible & 12\% & Départs souvent subis (PIP). \\ \hline
+3 - Moyen & 18\% & Population stable. \\ \hline
+5 - Exceptionnel & \textbf{28\%} & \textbf{Fuite des talents.} \\ \hline
+\end{tabular}
+\caption{Corrélation entre performance et taux de départ}
+\end{table}
+
+\textbf{Insight Clé :} Les meilleurs éléments partent \textbf{plus souvent} que les éléments moyens. L'analyse des salaires révèle que ces "Top Performers" sont souvent bloqués dans des tranches de rémunération "Mid-Level", créant un sentiment d'iniquité face à leur contribution réelle.
+
+\section{Satisfaction et Engagement : Le Seuil de Non-Retour}
+
+L'indicateur \textit{satisfaction\_level} (de 0 à 1) s'est avéré être le meilleur prédicteur de départ.
+\begin{itemize}
+    \item \textbf{Zone Verte (> 0.70) :} Attrition quasi-nulle (< 5\%).
+    \item \textbf{Zone Orange (0.50 - 0.70) :} Attrition modérée (15\%).
+    \item \textbf{Zone Rouge (< 0.50) :} Attrition massive de \textbf{78\%}.
+\end{itemize}
+
+\textbf{Conclusion du Storytelling :} L'attrition au sein de l'entreprise est un mélange de surcharge physique (heures) et de déception psychologique (performance non récompensée). Les outils Power BI permettent désormais de pointer précisément ces individus avant qu'ils ne franchissent la "ligne rouge" de satisfaction.

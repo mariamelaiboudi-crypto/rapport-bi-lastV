@@ -1,45 +1,66 @@
-\chapter{Analyse et Visualisation}
+\chapter{Ingénierie des Mesures DAX}
 
-\section{Conception des Tableaux de bord}
+\section{Introduction au DAX (Data Analysis Expressions)}
 
-La visualisation des données est l'aboutissement du projet de Business Intelligence. Son but est de traduire des données complexes en informations visuelles intuitives pour soutenir la prise de décision. Pour l'analyse de l'attrition et de la performance, nous avons conçu un tableau de bord interactif structuré en plusieurs pages thématiques, permettant aux gestionnaires d'explorer les données à différents niveaux de granularité.
+Le \textbf{DAX} est le langage de formule utilisé par Power BI pour créer des calculs personnalisés. Contrairement aux colonnes calculées (calculées ligne à ligne lors du chargement), les \textbf{Mesures} sont calculées dynamiquement en fonction du contexte de filtrage de l'utilisateur.
 
-\begin{figure}[h]
+\section{Logique de Calcul du Taux d'Attrition}
+
+Le Taux d'Attrition est la mesure pivot du projet. Elle nécessite de manipuler le contexte de filtrage pour isoler les employés ayant quitté l'entreprise.
+
+\subsection{Étape 1 : Nombre total d'employés}
+\begin{center}
+\textit{Total Employees = DISTINCTCOUNT(FactHR[EmployeeID])}
+\end{center}
+
+\subsection{Étape 2 : Nombre de départs}
+Nous utilisons la fonction \textbf{CALCULATE} pour modifier le contexte :
+\begin{center}
+\textit{Employees Left = CALCULATE([Total Employees], FactHR[left] = 1)}
+\end{center}
+
+\subsection{Étape 3 : Calcul du ratio final}
+Nous utilisons \textbf{DIVIDE} pour gérer les divisions par zéro de manière sécurisée :
+\begin{center}
+\textit{Attrition Rate = DIVIDE([Employees Left], [Total Employees], 0)}
+\end{center}
+
+\section{Évaluation de la Surcharge Horaire (Burnout Risk)}
+
+Pour identifier les collaborateurs à risque, nous avons créé une mesure filtrant les heures mensuelles extrêmes (seuil critique de 220h).
+
+\begin{center}
+\textit{Overtime Risk Score = CALCULATE([Total Employees], FILTER(FactHR, FactHR[average\_monthly\_hours] > 220))}
+\end{center}
+
+\section{Bibliothèque des Mesures Analytiques}
+
+Nous avons développé une série d'indicateurs avancés pour couvrir l'ensemble des besoins RH.
+
+\begin{table}[h]
 \centering
-% espace réservé pour la vue d'ensemble du dashboard (Page 1)
-\caption{Vue d'ensemble du tableau de bord RH - Analyse de l'attrition}
-\end{figure}
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+\textbf{Nom de la mesure} & \textbf{Type} & \textbf{Logique Métier} \\ \hline
+Retention Rate & Ratio & 1 - [Attrition Rate] \\ \hline
+Avg Satisfaction & Moyenne & AVERAGE(FactHR[satisfaction\_level]) \\ \hline
+Avg Performance & Moyenne & AVERAGE(FactHR[PerformanceRating]) \\ \hline
+Promotion Rate & Ratio & \% d'employés promus dans les 5 dernières années. \\ \hline
+Tenure YTD & Time Int. & Ancienneté cumulée sur l'année en cours. \\ \hline
+Avg Hours YoY & Time Int. & Évolution annuelle de la charge de travail (\%). \\ \hline
+\end{tabular}
+\caption{Catalogue des mesures DAX implémentées}
+\end{table}
 
-Le design a été guidé par les principes de la "Data Visualization" : utilisation de codes couleurs cohérents (rouge pour l'attrition positive, vert pour la stabilité), mise en avant des KPIs critiques en haut de page, et intégration de filtres dynamiques par département, genre et rôle professionnel.
+\section{Fonctions Avancées Utilisées}
 
-\section{Analyse multidimensionnelle et Insights}
+Pour garantir la précision des calculs, nous avons exploité les fonctions de haut niveau suivantes :
+\begin{itemize}
+    \item \textbf{USERELATIONSHIP :} Pour forcer l'utilisation de dates d'embauche ou de sortie selon le besoin.
+    \item \textbf{ALL / ALLSELECTED :} Pour calculer des ratios par rapport à la population totale tout en respectant les filtres de page.
+    \item \textbf{AVERAGEX :} Pour itérer sur la table des employés et calculer une satisfaction moyenne pondérée.
+\end{itemize}
 
-L'exploitation des tableaux de bord a permis de mettre en évidence plusieurs phénomènes structurants au sein de l'organisation. L'analyse ne se limite pas au constat du taux de départ, mais cherche à en comprendre les racines profondes.
+\section{Performance et Optimisation DAX}
 
-\subsection{Analyse par Profil et Département}
-
-L'un des premiers constats concerne la disparité entre les départements. Le département des \textit{Ventes} présente un taux d'attrition significativement plus élevé que celui de la \textit{Recherche et Développement}. Cela suggère des conditions de stress ou de pression sur les objectifs plus marquées dans ces fonctions.
-
-\begin{figure}[h]
-\centering
-% espace réservé pour le graphique de l'attrition par département
-\caption{Répartition du taux d'attrition selon les départements et les rôles}
-\end{figure}
-
-\subsection{L'impact des facteurs de travail}
-
-L'analyse croisée des heures supplémentaires et de la satisfaction révèle un insight majeur : les employés effectuant des heures supplémentaires régulières ont un taux d'attrition deux fois supérieur à la moyenne. Ce facteur semble primer sur le niveau de rémunération pour une part importante des départs volontaires.
-
-De plus, la distance domicile-travail apparaît comme un facteur d'érosion silencieux. Au-delà d'un certain seuil kilométrique, la probabilité de départ augmente de manière exponentielle, soulignant l'importance des politiques de télétravail ou de flexibilité géographique.
-
-\section{Interprétation de la performance}
-
-En parallèle de l'attrition, le tableau de bord permet d'évaluer la performance. Nous observons une corrélation positive entre le niveau d'implication (\textit{Job Involvement}) et la note de performance. Cependant, il est intéressant de noter que certains des employés les plus performants se situent également dans les segments à risque d'attrition, souvent par manque de perspectives de promotion ou d'équilibre vie-travail.
-
-\begin{figure}[h]
-\centering
-% espace réservé pour le graphique corrélation performance vs attrition
-\caption{Analyse de la relation entre performance et risque de départ}
-\end{figure}
-
-Ces résultats fournissent une base factuelle pour la direction des ressources humaines, leur permettant de cibler leurs actions de rétention non pas de manière uniforme, mais en fonction des facteurs de risque identifiés par le système BI.
+Pour maintenir une interactivité fluide, nous avons évité les colonnes calculées lourdes au profit de mesures optimisées. L'utilisation de variables (\textit{VAR}) à l'intérieur des mesures a permis de réduire le temps de calcul en évitant les évaluations redondantes d'expressions complexes.
