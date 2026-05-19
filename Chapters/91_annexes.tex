@@ -1,51 +1,153 @@
 \chapter*{Annexes}
 \addcontentsline{toc}{chapter}{Annexes}
 
-\section*{Annexe A : Description du Dataset}
-Le dataset utilisé dans ce projet est le jeu de données IBM HR Analytics Employee Attrition \& Performance disponible sur Kaggle.  
-Il contient des informations sur les employés telles que :
+\section*{Annexe A : Description des Données}
+
+Le projet utilise deux fichiers de données principaux :
+
 \begin{itemize}
-    \item Âge
-    \item Département
-    \item Salaire mensuel
-    \item Niveau d’éducation
-    \item Satisfaction au travail
-    \item Nombre d’années d’expérience
-    \item Taux d’attrition
+    \item \textbf{employees.csv} : contient les informations générales des employés entre 2018 et 2024.
+    \item \textbf{hr\_analytics.csv} : contient les indicateurs RH comportementaux et de performance.
 \end{itemize}
 
-\section*{Annexe B : Technologies Utilisées}
-Les principales technologies utilisées dans ce projet sont :
+Les principales variables analysées sont :
+
 \begin{itemize}
-    \item Python
-    \item Pandas
-    \item NumPy
-    \item SQL Server
-    \item Power BI
-    \item Jupyter Notebook
+    \item EmployeeID
+    \item Department
+    \item Salary
+    \item Satisfaction Level
+    \item Last Evaluation
+    \item Average Monthly Hours
+    \item Number of Projects
+    \item Tenure Years
+    \item Attrition Status
 \end{itemize}
 
-\section*{Annexe C : Exemple de Requête SQL}
+\section*{Annexe B : Architecture du Projet}
+
+Structure organisationnelle du projet BI RH :
+
 \begin{verbatim}
-SELECT Department,
-       AVG(MonthlyIncome) AS AverageSalary
-FROM Employees
-GROUP BY Department;
+BI_RH/
+├── Data/
+│   └── Raw/
+│       ├── employees.csv
+│       └── hr_analytics.csv
+├── PowerBI/
+│   ├── etl_HR.pbix
+│   ├── dim__HR.pbix
+│   └── dax__HR.pbix
+├── Screenshots/
+├── Documentation/
+└── README.md
 \end{verbatim}
 
-\section*{Annexe D : Captures d’Écran}
-Cette section contient :
+\section*{Annexe C : Architecture en Étoile (Star Schema)}
+
+Le modèle de données suit une architecture Star Schema composée de :
+
 \begin{itemize}
-    \item Les tableaux de bord Power BI
-    \item Les visualisations analytiques
-    \item Les résultats des analyses RH
+    \item \textbf{FactHR} : table de faits principale contenant les métriques RH.
+    \item \textbf{DimEmployee} : informations des employés.
+    \item \textbf{DimDepartment} : informations des départements.
+    \item \textbf{DimDate} : gestion temporelle et analyse chronologique.
 \end{itemize}
 
-\section*{Annexe E : Objectifs du Projet}
-Les principaux objectifs du projet sont :
+Cette architecture permet :
 \begin{itemize}
-    \item Construire un Data Warehouse RH
-    \item Analyser les performances des employés
-    \item Étudier les facteurs d’attrition
-    \item Faciliter la prise de décision grâce à la Business Intelligence
+    \item Une meilleure performance des requêtes DAX
+    \item Une maintenance simplifiée
+    \item Une modélisation professionnelle orientée Business Intelligence
+\end{itemize}
+
+\section*{Annexe D : Mesures DAX Principales}
+
+\subsection*{Taux d'Attrition}
+
+\begin{verbatim}
+Attrition Rate =
+DIVIDE(
+    CALCULATE(
+        DISTINCTCOUNT(FactHR[EmployeeID]),
+        FactHR[left] = 1
+    ),
+    [Total Employees],
+    0
+)
+\end{verbatim}
+
+\subsection*{Taux de Rétention}
+
+\begin{verbatim}
+Retention Rate = 1 - [Attrition Rate]
+\end{verbatim}
+
+\subsection*{Score de Risque des Heures Supplémentaires}
+
+\begin{verbatim}
+Overtime Risk Score =
+CALCULATE(
+    DISTINCTCOUNT(FactHR[EmployeeID]),
+    FILTER(
+        FactHR,
+        FactHR[average_monthly_hours] > 220
+    )
+)
+\end{verbatim}
+
+\section*{Annexe E : Pages du Dashboard}
+
+Le dashboard Power BI est composé de cinq pages principales :
+
+\begin{enumerate}
+    \item Executive Overview
+    \item Attrition Analysis
+    \item Department Insights
+    \item Employee Satisfaction
+    \item Salary \& Performance
+\end{enumerate}
+
+Chaque page contient des visualisations interactives permettant une analyse décisionnelle approfondie.
+
+\section*{Annexe F : Principaux Insights Business}
+
+Les analyses réalisées ont permis d'identifier plusieurs résultats importants :
+
+\begin{itemize}
+    \item Le département Sales présente le plus fort taux d'attrition.
+    \item Les employés travaillant plus de 220 heures par mois sont fortement exposés au risque de départ.
+    \item Le pic d'attrition apparaît entre 2 et 3 années d'ancienneté.
+    \item Les employés performants mais sous-rémunérés quittent davantage l'entreprise.
+    \item Un faible niveau de satisfaction est fortement corrélé au départ des employés.
+\end{itemize}
+
+\section*{Annexe G : Technologies et Outils Utilisés}
+
+\begin{itemize}
+    \item Power BI Desktop
+    \item Power Query (M Language)
+    \item DAX
+    \item Star Schema Modeling
+    \item CSV Data Sources
+\end{itemize}
+
+\section*{Annexe H : Captures d’Écran}
+
+Cette section contient :
+
+\begin{itemize}
+    \item Les captures des dashboards Power BI
+    \item Le modèle en étoile (Star Schema)
+    \item Les KPIs RH
+    \item Les visualisations analytiques
+\end{itemize}
+
+\section*{Annexe I : Membres du Projet}
+
+\begin{itemize}
+    \item ZAKARIAE EL HADDOUCHI — Développement ETL \& Modélisation
+    \item OUSSAMA Lebyed — Analyse de Données \& KPIs
+    \item Oualid Boutayeb — Visualisation \& Dashboard
+    \item Meryam El Aiboudi — Analyse \& Documentation BI
 \end{itemize}
